@@ -26,6 +26,8 @@ const Container = styled.div`
 
 const Content = styled.main`
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 
   width: 100%;
   height: 100%;

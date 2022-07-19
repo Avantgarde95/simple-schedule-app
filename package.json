@@ -1,5 +1,5 @@
 {
-  "name": "assignment-practice",
+  "name": "simple-schedule-app",
   "description": "Simple app for practicing React and related libraries",
   "author": "Hunmin Park",
   "private": true,
@@ -34,5 +34,6 @@
     "export": "next export",
     "lint": "next lint --dir src",
     "lint:fix": "next lint --dir src --fix"
-  }
+  },
+  "packageManager": "yarn@3.2.1"
 }

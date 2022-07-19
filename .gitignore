@@ -11,3 +11,12 @@ node_modules
 # Next.js files.
 .next
 .env
+
+# Yarn files.
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
