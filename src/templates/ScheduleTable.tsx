@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { createSchedule, getScheduleIDs, removeAllSchedules } from "apis/APIs";
 import ScheduleViewer from "templates/ScheduleViewer";
 import { disableBrowserHighlight } from "styles/Mixins";
 
 const ScheduleTable = () => {
+  const queryClient = useQueryClient();
   const { data: scheduleIDs, isLoading, refetch } = useQuery<Array<number>>(["scheduleIDs"], () => getScheduleIDs());
 
   async function handleClickCreate() {
@@ -16,7 +17,7 @@ const ScheduleTable = () => {
       importance: "Normal",
     });
 
-    await refetch();
+    await queryClient.invalidateQueries(["scheduleIDs"]);
   }
 
   async function handleClickRemoveAll() {

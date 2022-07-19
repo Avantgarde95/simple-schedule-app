@@ -15,7 +15,7 @@ export async function getSchedule(input: { id: number }): Promise<Schedule> {
   return await response.json();
 }
 
-export async function createSchedule(input: Omit<Schedule, "id">): Promise<Schedule> {
+export async function createSchedule(input: Omit<Schedule, "id">): Promise<void> {
   const response = await fetch("/api/schedule", {
     headers: {
       "Content-Type": "application/json",
@@ -23,5 +23,11 @@ export async function createSchedule(input: Omit<Schedule, "id">): Promise<Sched
     method: "POST",
     body: JSON.stringify(input),
   });
+
+  return await response.json();
+}
+
+export async function removeSchedule(input: { id: number }): Promise<void> {
+  const response = await fetch(`/api/schedule?id=${input.id}`, { method: "DELETE" });
   return await response.json();
 }

@@ -32,7 +32,7 @@ const Content = styled.main`
   // Fix overflow.
   min-height: 0;
   flex: 1;
-  padding: 1rem;
+  padding: 0 1rem 1rem 1rem;
 `;
 
 export default Page;
