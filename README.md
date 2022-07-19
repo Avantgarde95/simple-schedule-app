@@ -32,7 +32,7 @@ Check the code
 ## APIs
 
 - `/api/schedules`
-  - GET: Get the array of all schedules
+  - GET: Get the array of schedules' IDs.
 - `/api/schedule`
   - POST (body: content, ...): Create a schedule
   - PATCH (query: id, body: content, ...): Update the schedule

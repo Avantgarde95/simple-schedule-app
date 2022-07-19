@@ -4,7 +4,17 @@ import { Schedule } from "types/Schedule";
 import { generateID, scheduleDB } from "DB";
 
 export default function handler(request: NextApiRequest, response: NextApiResponse) {
-  if (request.method === "POST") {
+  if (request.method === "GET") {
+    const id = Number(request.query.id);
+
+    if (scheduleDB.has(id)) {
+      setTimeout(() => {
+        response.status(200).json(scheduleDB.get(id));
+      }, 500 + Math.random() * 1000);
+    } else {
+      response.status(400).json({ message: "Invalid ID" });
+    }
+  } else if (request.method === "POST") {
     const item: Schedule = {
       id: generateID(),
       content: request.body.content,
@@ -22,9 +32,11 @@ export default function handler(request: NextApiRequest, response: NextApiRespon
       item.content = request.body.content;
       item.unixTime = request.body.unixTime;
       item.importance = request.body.importance;
-    }
 
-    response.status(200).json(item);
+      response.status(200).json(item);
+    } else {
+      response.status(400).json({ message: "Invalid ID" });
+    }
   } else if (request.method === "DELETE") {
     const id = Number(request.query.id);
     scheduleDB.delete(id);

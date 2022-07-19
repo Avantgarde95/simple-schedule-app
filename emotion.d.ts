@@ -4,7 +4,8 @@ declare module "@emotion/react" {
   interface Theme {
     color: {
       primary: string;
-      stroke: string;
+      primaryVariant: string;
+      secondary: string;
       background: string;
     };
   }
