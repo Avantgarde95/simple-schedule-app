@@ -5,6 +5,7 @@ import { Global, ThemeProvider } from "@emotion/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
+import { isDevelopmentMode } from "utils/DebugUtils";
 import { globalStyle } from "styles/Global";
 import { defaultTheme } from "styles/Theme";
 
@@ -14,7 +15,7 @@ const App = ({ Component, pageProps }: AppProps) => {
   return (
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} />
+        {isDevelopmentMode() && <ReactQueryDevtools initialIsOpen={false} />}
         <ThemeProvider theme={defaultTheme}>
           <Global styles={globalStyle} />
           <Component {...pageProps} />
