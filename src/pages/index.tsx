@@ -1,5 +1,7 @@
 import React from "react";
 
-const HomePage = () => <div>Hello!</div>;
+import Page from "templates/Page";
+
+const HomePage = () => <Page>Hello</Page>;
 
 export default HomePage;
