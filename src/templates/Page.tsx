@@ -28,6 +28,10 @@ const Content = styled.main`
   box-sizing: border-box;
 
   width: 100%;
+  height: 100%;
+  // Fix overflow.
+  min-height: 0;
+  flex: 1;
   padding: 1rem;
 `;
 

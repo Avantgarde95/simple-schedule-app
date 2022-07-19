@@ -13,3 +13,7 @@ export const fadeInStyle = css`
   opacity: 0;
   animation: ${fadeInAnimation} 1s forwards;
 `;
+
+export const disableBrowserHighlight = css`
+  -webkit-tap-highlight-color: transparent;
+`;
