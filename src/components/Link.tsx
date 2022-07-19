@@ -3,9 +3,11 @@ import NextLink from "next/link";
 
 type LinkProps = ComponentProps<"a">;
 
-const Link = ({ href, ...others }: LinkProps) => (
+const Link = ({ href, children, ...others }: LinkProps) => (
   <NextLink href={href ?? ""}>
-    <a target="_blank" rel="noopenner noreferrer" {...others} />
+    <a target="_blank" rel="noopenner noreferrer" {...others}>
+      {children}
+    </a>
   </NextLink>
 );
 

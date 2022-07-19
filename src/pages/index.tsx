@@ -1,12 +1,12 @@
 import React from "react";
 
 import Page from "templates/Page";
-import ScheduleTable from "templates/ScheduleTable";
+import Table from "templates/Table";
 import Controls from "templates/Controls";
 
 const HomePage = () => (
   <Page>
-    <ScheduleTable />
+    <Table />
     <Controls />
   </Page>
 );

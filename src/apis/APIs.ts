@@ -31,3 +31,17 @@ export async function removeSchedule(input: { id: number }): Promise<void> {
   const response = await fetch(`/api/schedule?id=${input.id}`, { method: "DELETE" });
   return await response.json();
 }
+
+export async function updateSchedule(input: Schedule): Promise<void> {
+  const { id, ...others } = input;
+
+  const response = await fetch(`/api/schedule?id=${input.id}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "PATCH",
+    body: JSON.stringify(others),
+  });
+
+  return await response.json();
+}

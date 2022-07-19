@@ -3,19 +3,19 @@ import styled from "@emotion/styled";
 import { useQuery } from "@tanstack/react-query";
 
 import { getScheduleIDs } from "apis/APIs";
-import ScheduleViewer from "templates/ScheduleViewer";
+import Row from "templates/Row";
 
-const ScheduleTable = () => {
+const Table = () => {
   const { data: scheduleIDs, isLoading } = useQuery<Array<number>>(["scheduleIDs"], () => getScheduleIDs());
 
   return (
-    <Table>
-      {isLoading ? <Loading>Loading...</Loading> : scheduleIDs?.map(id => <ScheduleViewer key={id} scheduleID={id} />)}
-    </Table>
+    <Container>
+      {isLoading ? <Loading>Loading...</Loading> : scheduleIDs?.map(id => <Row key={id} scheduleID={id} />)}
+    </Container>
   );
 };
 
-const Table = styled.div`
+const Container = styled.div`
   overflow-y: auto;
   box-sizing: border-box;
   display: flex;
@@ -34,4 +34,4 @@ const Loading = styled.div`
   padding: 0.5rem;
 `;
 
-export default ScheduleTable;
+export default Table;
