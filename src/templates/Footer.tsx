@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createSchedule, removeAllSchedules } from "apis/APIs";
 import { disableBrowserHighlight } from "styles/Mixins";
 
-const Controls = () => {
+const Footer = () => {
   const queryClient = useQueryClient();
 
   const { mutate: runCreate, isLoading: isCreating } = useMutation(() => createSchedule(), {
@@ -76,4 +76,4 @@ const Button = styled.button`
   }
 `;
 
-export default Controls;
+export default Footer;

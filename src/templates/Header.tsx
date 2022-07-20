@@ -51,13 +51,13 @@ const Header = () => {
 const Container = styled.header`
   ${fadeInStyle};
 
-  box-sizing: border-box;
   display: flex;
   flex-direction: row;
   align-items: center;
+  flex-wrap: wrap;
 
   width: 100%;
-  padding: 0.8rem 1rem;
+  margin-bottom: 1rem;
 `;
 
 const Logo = styled.div`
@@ -66,13 +66,18 @@ const Logo = styled.div`
 `;
 
 const Title = styled.div`
+  white-space: nowrap;
+
+  width: 100%;
+  flex: 1;
   margin-left: 0.5rem;
   font-size: 1.5rem;
   line-height: 1.5rem;
 `;
 
 const Controls = styled.div`
-  margin-left: auto;
+  white-space: nowrap;
+
   margin-right: 0.3rem;
 `;
 
