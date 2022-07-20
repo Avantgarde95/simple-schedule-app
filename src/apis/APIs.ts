@@ -1,3 +1,9 @@
+/**
+ * @file Fake APIs.
+ * Instead of connecting to the server, we just put some delay to the functions
+ * to simulate the Internet connection.
+ */
+
 import { v4 as uuid } from "uuid";
 
 import { Schedule } from "types/Schedule";
