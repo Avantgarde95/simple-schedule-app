@@ -29,14 +29,18 @@ const Header = () => {
         <CodeLink href="https://github.com/Avantgarde95/simple-schedule-app">{"</>"}</CodeLink>
       </Controls>
       <AboutModal isOpen={isModalOpen} onRequestClose={handleModalClose}>
-        Simple schedule app
+        Simple schedule app created for practicing...
         <ul>
-          <li>Created for practicing some libraries & frameworks</li>
           <li>TypeScript</li>
           <li>React</li>
           <li>Emotion: For styling</li>
           <li>Next.js: For SSR</li>
-          <li>React Query: For data fetching</li>
+          <li>
+            <strong>React Query</strong>: For data fetching
+          </li>
+          <li>
+            <strong>Yarn Berry</strong>
+          </li>
         </ul>
         <CloseButton onClick={handleModalClose}>Close</CloseButton>
       </AboutModal>

@@ -8,9 +8,17 @@ import Row from "templates/Row";
 const Table = () => {
   const { data: scheduleIDs, isLoading } = useQuery(["scheduleIDs"], () => getScheduleIDs());
 
+  const noSchedules = !scheduleIDs || scheduleIDs.length === 0;
+
   return (
     <Container>
-      {isLoading ? <Loading>Loading...</Loading> : scheduleIDs?.map(id => <Row key={id} scheduleID={id} />)}
+      {isLoading ? (
+        <Message>Loading...</Message>
+      ) : noSchedules ? (
+        <Message>No schedules!</Message>
+      ) : (
+        scheduleIDs.map(id => <Row key={id} scheduleID={id} />)
+      )}
     </Container>
   );
 };
@@ -27,7 +35,7 @@ const Container = styled.div`
   border: 4px solid ${({ theme }) => theme.color.primary};
 `;
 
-const Loading = styled.div`
+const Message = styled.div`
   box-sizing: border-box;
 
   width: 100%;

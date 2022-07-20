@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { createSchedule, removeAllSchedules } from "apis/APIs";
 import { disableBrowserHighlight } from "styles/Mixins";
@@ -8,25 +8,39 @@ import { disableBrowserHighlight } from "styles/Mixins";
 const Controls = () => {
   const queryClient = useQueryClient();
 
-  async function handleClickCreate() {
-    await createSchedule();
-    await queryClient.invalidateQueries(["scheduleIDs"]);
+  const { mutate: runCreate, isLoading: isCreating } = useMutation(() => createSchedule(), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["scheduleIDs"]);
+    },
+  });
+
+  const { mutate: runRemove, isLoading: isRemoving } = useMutation(() => removeAllSchedules(), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["scheduleIDs"]);
+    },
+  });
+
+  function handleClickCreate() {
+    runCreate();
   }
 
-  async function handleClickRemoveAll() {
-    await removeAllSchedules();
-    await queryClient.invalidateQueries(["scheduleIDs"]);
+  function handleClickRemoveAll() {
+    runRemove();
   }
 
   return (
     <Container>
-      <Button onClick={handleClickCreate}>Create</Button>
-      <Button onClick={handleClickRemoveAll}>Remove all</Button>
+      <Button onClick={handleClickCreate} disabled={isCreating}>
+        {isCreating ? "Creating..." : "Create"}
+      </Button>
+      <Button onClick={handleClickRemoveAll} disabled={isRemoving}>
+        {isRemoving ? "Removing..." : "Remove all"}
+      </Button>
     </Container>
   );
 };
 
-const Container = styled.div`
+const Container = styled.footer`
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
@@ -49,11 +63,15 @@ const Button = styled.button`
   color: ${({ theme }) => theme.color.background};
   background-color: ${({ theme }) => theme.color.primary};
 
+  &[disabled] {
+    color: ${({ theme }) => theme.color.background};
+  }
+
   &:not(:first-of-type) {
     margin-left: 0.5rem;
   }
 
-  &:hover {
+  &:hover:not([disabled]) {
     background-color: ${({ theme }) => theme.color.secondary};
   }
 `;

@@ -8,7 +8,7 @@ function generateID() {
 }
 
 async function simulateNetwork<Result>(job: () => Result) {
-  return await runAfterDelay(job, Math.random() * 120);
+  return await runAfterDelay(job, 50 + Math.random() * 200);
 }
 
 // Fake DB.
