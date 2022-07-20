@@ -4,10 +4,11 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { BiTrash } from "react-icons/bi";
 import { BsPencil } from "react-icons/bs";
 import { CgSandClock } from "react-icons/cg";
+import { AiOutlineSave } from "react-icons/ai";
 
 import { Schedule } from "types/Schedule";
+import { formatDate } from "utils/StringUtils";
 import { removeSchedule, updateSchedule } from "apis/APIs";
-import { AiOutlineSave } from "react-icons/ai";
 
 interface ViewerProps {
   schedule: Schedule;
@@ -120,17 +121,6 @@ export const Editor = ({ schedule, onOpenSave }: EditorProps) => {
     </Container>
   );
 };
-
-function formatDate(date: Date) {
-  return `${formatNumber(date.getFullYear(), 4)}-${formatNumber(date.getMonth() + 1, 2)}-${formatNumber(
-    date.getDate(),
-    2
-  )}`;
-}
-
-function formatNumber(value: number, length: number) {
-  return `${value}`.padStart(length, "0");
-}
 
 interface ContainerProps {
   isHighlighted: boolean;
