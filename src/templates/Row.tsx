@@ -8,16 +8,13 @@ import { AiOutlineSave } from "react-icons/ai";
 import { Schedule as Schedule } from "types/Schedule";
 import { getSchedule, removeSchedule, updateSchedule } from "apis/APIs";
 
-type Mode = "View" | "Edit";
-
 interface RowProps {
-  initialMode?: Mode;
   scheduleID: string;
 }
 
-const Row = ({ initialMode = "View", scheduleID }: RowProps) => {
+const Row = ({ scheduleID }: RowProps) => {
   const { data: schedule, isLoading } = useQuery(["schedule", scheduleID], () => getSchedule(scheduleID));
-  const [mode, setMode] = useState<Mode>(initialMode);
+  const [mode, setMode] = useState<"View" | "Edit">("View");
 
   function handleOpenEdit() {
     setMode("Edit");
@@ -29,17 +26,28 @@ const Row = ({ initialMode = "View", scheduleID }: RowProps) => {
 
   return (
     <Container>
-      {isLoading
-        ? "..."
-        : schedule &&
-          (mode === "View" ? (
-            <Viewer schedule={schedule} onOpenEdit={handleOpenEdit} />
-          ) : (
-            <Editor schedule={schedule} onOpenSave={handleOpenSave} />
-          ))}
+      {isLoading ? (
+        <Loading />
+      ) : (
+        schedule &&
+        (mode === "View" ? (
+          <Viewer schedule={schedule} onOpenEdit={handleOpenEdit} />
+        ) : (
+          <Editor schedule={schedule} onOpenSave={handleOpenSave} />
+        ))
+      )}
     </Container>
   );
 };
+
+const Container = styled.div`
+  width: 100%;
+  min-height: 60px;
+  flex-shrink: 0;
+  border-bottom: 3px solid ${({ theme }) => theme.color.primary};
+`;
+
+const Loading = () => <Area isHighlighted={false}>...</Area>;
 
 interface ViewerProps {
   schedule: Schedule;
@@ -57,11 +65,11 @@ const Viewer = ({ schedule, onOpenEdit }: ViewerProps) => {
   }
 
   return (
-    <>
+    <Area isHighlighted={schedule.isImportant}>
       <Schedule>
         {schedule.content}
         <Keyword>at</Keyword>
-        {displayDate(date)}
+        {formatDate(date)}
       </Schedule>
       <Controls>
         <Button onClick={onOpenEdit}>
@@ -71,7 +79,7 @@ const Viewer = ({ schedule, onOpenEdit }: ViewerProps) => {
           <BiTrash />
         </Button>
       </Controls>
-    </>
+    </Area>
   );
 };
 
@@ -83,7 +91,8 @@ interface EditorProps {
 const Editor = ({ schedule, onOpenSave }: EditorProps) => {
   const queryClient = useQueryClient();
   const [content, setContent] = useState(schedule.content);
-  const [date, setDate] = useState(displayDate(new Date(schedule.startTime)));
+  const [date, setDate] = useState(formatDate(new Date(schedule.startTime)));
+  const [isImportant, setImportant] = useState(schedule.isImportant);
 
   function handleContentChange(event: ChangeEvent<HTMLInputElement>) {
     setContent(event.target.value);
@@ -93,8 +102,17 @@ const Editor = ({ schedule, onOpenSave }: EditorProps) => {
     setDate(event.target.value);
   }
 
+  function handleImportantChange(event: ChangeEvent<HTMLInputElement>) {
+    setImportant(event.target.checked);
+  }
+
   async function save() {
-    await updateSchedule(schedule.id, { content, startTime: new Date(date).getTime() });
+    await updateSchedule(schedule.id, {
+      content,
+      isImportant,
+      startTime: new Date(date).getTime(),
+    });
+
     queryClient.invalidateQueries(["schedule", schedule.id]);
     onOpenSave();
   }
@@ -110,43 +128,51 @@ const Editor = ({ schedule, onOpenSave }: EditorProps) => {
   }
 
   return (
-    <>
+    <Area isHighlighted={isImportant}>
       <Schedule>
         <Input type="text" value={content} onChange={handleContentChange} onKeyUp={handleKeyUp} />
         <Keyword>at</Keyword>
         <Input type="date" value={date} onChange={handleDateChange} onKeyUp={handleKeyUp} />
+        <Label>
+          <input type="checkbox" checked={isImportant} onChange={handleImportantChange} />
+          Important
+        </Label>
       </Schedule>
       <Controls>
         <Button onClick={handleClickSave}>
           <AiOutlineSave />
         </Button>
       </Controls>
-    </>
+    </Area>
   );
 };
 
-function displayDate(date: Date) {
-  return `${displayNumber(date.getFullYear(), 4)}-${displayNumber(date.getMonth() + 1, 2)}-${displayNumber(
+function formatDate(date: Date) {
+  return `${formatNumber(date.getFullYear(), 4)}-${formatNumber(date.getMonth() + 1, 2)}-${formatNumber(
     date.getDate(),
     2
   )}`;
 }
 
-function displayNumber(value: number, length: number) {
+function formatNumber(value: number, length: number) {
   return `${value}`.padStart(length, "0");
 }
 
-const Container = styled.div`
+interface AreaProps {
+  isHighlighted: boolean;
+}
+
+const Area = styled.div<AreaProps>`
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
   align-items: center;
 
   width: 100%;
-  min-height: 60px;
+  height: 100%;
   padding: 0 1rem;
-  flex-shrink: 0;
-  border-bottom: 2px solid ${({ theme }) => theme.color.primary};
+
+  ${({ isHighlighted, theme }) => isHighlighted && `background-color: ${theme.color.tertiary}`}
 `;
 
 const Schedule = styled.div`
@@ -165,7 +191,7 @@ const Schedule = styled.div`
 const Keyword = styled.span`
   margin: 0 0.3rem;
 
-  color: ${({ theme }) => theme.color.primaryVariant};
+  color: ${({ theme }) => theme.color.secondary};
 `;
 
 const Input = styled.input`
@@ -173,6 +199,13 @@ const Input = styled.input`
   background-color: transparent;
   font-family: inherit;
   font-size: inherit;
+`;
+
+const Label = styled.label`
+  cursor: pointer;
+  user-select: none;
+
+  margin-left: 0.5rem;
 `;
 
 const Controls = styled.div`
@@ -189,7 +222,7 @@ const Button = styled.button`
   background-color: transparent;
 
   &:hover {
-    background-color: ${({ theme }) => theme.color.primaryVariant};
+    background-color: ${({ theme }) => theme.color.secondary};
   }
 
   &:not(:first-of-type) {

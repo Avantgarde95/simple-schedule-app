@@ -1,3 +1,7 @@
+# simple-schedule-app
+
+Simple app created for practicing React and related libraries
+
 ## How to run
 
 Must install

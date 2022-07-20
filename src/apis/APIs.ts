@@ -3,26 +3,12 @@ import { v4 as uuid } from "uuid";
 import { Schedule } from "types/Schedule";
 import { runAfterDelay } from "utils/AsyncUtils";
 
-function pickDefined<Keys extends PropertyKey>(object: Partial<Record<Keys, unknown>>, ...keys: Array<Keys>) {
-  const result: Partial<Record<Keys, unknown>> = {};
-
-  for (const key of keys) {
-    const value = object[key];
-
-    if (value !== null && typeof value !== "undefined") {
-      result[key] = value;
-    }
-  }
-
-  return result;
-}
-
 function generateID() {
   return uuid();
 }
 
 async function simulateNetwork<Result>(job: () => Result) {
-  return await runAfterDelay(job, Math.random() * 100);
+  return await runAfterDelay(job, Math.random() * 120);
 }
 
 // Fake DB.
@@ -76,7 +62,7 @@ export async function removeSchedule(id: string): Promise<void> {
   });
 }
 
-export async function updateSchedule(id: string, parts: Partial<Schedule>): Promise<void> {
+export async function updateSchedule(id: string, parts: Omit<Schedule, "id" | "creationTime">): Promise<void> {
   await simulateNetwork(() => {
     const item = scheduleDB.get(id);
 
@@ -84,7 +70,8 @@ export async function updateSchedule(id: string, parts: Partial<Schedule>): Prom
       throw new Error(`Cannot find item with id ${id}`);
     }
 
-    item.content = parts.content ?? "";
-    Object.assign(item, pickDefined(parts, "content", "isImportant", "startTime"));
+    item.content = parts.content;
+    item.isImportant = parts.isImportant;
+    item.startTime = parts.startTime;
   });
 }

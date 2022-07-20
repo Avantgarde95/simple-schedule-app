@@ -24,7 +24,7 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   flex: 1;
-  border: 3px solid ${({ theme }) => theme.color.primary};
+  border: 4px solid ${({ theme }) => theme.color.primary};
 `;
 
 const Loading = styled.div`

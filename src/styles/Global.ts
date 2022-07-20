@@ -1,5 +1,7 @@
 import { css } from "@emotion/react";
 
+import { fadeInStyle } from "styles/Mixins";
+
 export const globalStyle = css`
   html {
     width: 100%;
@@ -21,5 +23,9 @@ export const globalStyle = css`
   #__next {
     width: 100%;
     height: 100%;
+  }
+
+  .ReactModal__Overlay {
+    ${fadeInStyle}
   }
 `;

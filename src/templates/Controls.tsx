@@ -30,7 +30,6 @@ const Container = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
-  gap: 0.5rem;
 
   width: 100%;
   padding-top: 1rem;
@@ -50,8 +49,12 @@ const Button = styled.button`
   color: ${({ theme }) => theme.color.background};
   background-color: ${({ theme }) => theme.color.primary};
 
+  &:not(:first-of-type) {
+    margin-left: 0.5rem;
+  }
+
   &:hover {
-    background-color: ${({ theme }) => theme.color.primaryVariant};
+    background-color: ${({ theme }) => theme.color.secondary};
   }
 `;
 

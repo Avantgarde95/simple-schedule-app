@@ -11,7 +11,7 @@ export const fadeInAnimation = keyframes`
 
 export const fadeInStyle = css`
   opacity: 0;
-  animation: ${fadeInAnimation} 1s forwards;
+  animation: ${fadeInAnimation} 0.5s forwards;
 `;
 
 export const disableBrowserHighlight = css`
