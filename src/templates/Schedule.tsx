@@ -159,6 +159,7 @@ const Keyword = styled.span`
 `;
 
 const Input = styled.input`
+  min-width: 8rem;
   border: 1px solid ${({ theme }) => theme.color.primary};
   background-color: transparent;
   font-family: inherit;
