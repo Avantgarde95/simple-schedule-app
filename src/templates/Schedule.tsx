@@ -26,7 +26,7 @@ export const Viewer = ({ schedule, onOpenEdit }: ViewerProps) => {
 
   const date = new Date(schedule.startTime);
 
-  async function handleClickDelete() {
+  function handleClickDelete() {
     runDelete();
   }
 
@@ -61,7 +61,7 @@ export const Editor = ({ schedule, onOpenSave }: EditorProps) => {
 
   const queryClient = useQueryClient();
 
-  const { mutate: doUpdate, isLoading: isUpdating } = useMutation(
+  const { mutate: runUpdate, isLoading: isUpdating } = useMutation(
     () =>
       updateSchedule(schedule.id, {
         content,
@@ -90,12 +90,12 @@ export const Editor = ({ schedule, onOpenSave }: EditorProps) => {
 
   function handleKeyUp(event: KeyboardEvent<HTMLInputElement>) {
     if (event.key === "Enter") {
-      doUpdate();
+      runUpdate();
     }
   }
 
   function handleClickUpdate() {
-    doUpdate();
+    runUpdate();
   }
 
   return (
