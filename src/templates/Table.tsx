@@ -6,7 +6,7 @@ import { getScheduleIDs } from "apis/APIs";
 import Row from "templates/Row";
 
 const Table = () => {
-  const { data: scheduleIDs, isLoading } = useQuery<Array<number>>(["scheduleIDs"], () => getScheduleIDs());
+  const { data: scheduleIDs, isLoading } = useQuery(["scheduleIDs"], () => getScheduleIDs());
 
   return (
     <Container>

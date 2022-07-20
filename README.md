@@ -28,13 +28,3 @@ Check the code
 
 - Run `yarn lint`
 - Run `yarn lint:fix` to check & fix
-
-## APIs
-
-- `/api/schedules`
-  - GET: Get the array of schedules' IDs
-  - DELETE: Remove all schedules
-- `/api/schedule`
-  - POST (body: content, ...): Create a schedule
-  - PATCH (query: id, body: content, ...): Update the schedule
-  - DELETE (query: id): Delete the schedule

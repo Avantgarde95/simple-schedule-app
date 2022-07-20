@@ -1,6 +1,7 @@
 export interface Schedule {
-  id: number;
+  id: string;
   content: string;
-  unixTime: number;
-  importance: "Normal" | "Important" | "VeryImportant";
+  isImportant: boolean;
+  startTime: number;
+  creationTime: number;
 }

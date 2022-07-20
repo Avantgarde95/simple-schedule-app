@@ -1,47 +1,90 @@
-import { Schedule } from "types/Schedule";
+import { v4 as uuid } from "uuid";
 
-export async function getScheduleIDs(): Promise<Array<number>> {
-  const response = await fetch("/api/schedules", { method: "GET" });
-  return await response.json();
+import { Schedule } from "types/Schedule";
+import { runAfterDelay } from "utils/AsyncUtils";
+
+function pickDefined<Keys extends PropertyKey>(object: Partial<Record<Keys, unknown>>, ...keys: Array<Keys>) {
+  const result: Partial<Record<Keys, unknown>> = {};
+
+  for (const key of keys) {
+    const value = object[key];
+
+    if (value !== null && typeof value !== "undefined") {
+      result[key] = value;
+    }
+  }
+
+  return result;
+}
+
+function generateID() {
+  return uuid();
+}
+
+async function simulateNetwork<Result>(job: () => Result) {
+  return await runAfterDelay(job, Math.random() * 100);
+}
+
+// Fake DB.
+const scheduleDB: Map<string, Schedule> = new Map();
+
+export async function getScheduleIDs(): Promise<Array<string>> {
+  return await simulateNetwork(() =>
+    Array.from(scheduleDB.values())
+      .sort((item1, item2) => item1.creationTime - item2.creationTime)
+      .map(item => item.id)
+  );
 }
 
 export async function removeAllSchedules(): Promise<void> {
-  const response = await fetch("/api/schedules", { method: "DELETE" });
-  return await response.json();
-}
-
-export async function getSchedule(input: { id: number }): Promise<Schedule> {
-  const response = await fetch(`/api/schedule?id=${input.id}`, { method: "GET" });
-  return await response.json();
-}
-
-export async function createSchedule(input: Omit<Schedule, "id">): Promise<void> {
-  const response = await fetch("/api/schedule", {
-    headers: {
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-    body: JSON.stringify(input),
+  await simulateNetwork(() => {
+    scheduleDB.clear();
   });
-
-  return await response.json();
 }
 
-export async function removeSchedule(input: { id: number }): Promise<void> {
-  const response = await fetch(`/api/schedule?id=${input.id}`, { method: "DELETE" });
-  return await response.json();
-}
+export async function getSchedule(id: string): Promise<Schedule> {
+  return await simulateNetwork(() => {
+    const item = scheduleDB.get(id);
 
-export async function updateSchedule(input: Schedule): Promise<void> {
-  const { id, ...others } = input;
+    if (typeof item === "undefined") {
+      throw new Error(`Cannot find item with id ${id}`);
+    }
 
-  const response = await fetch(`/api/schedule?id=${input.id}`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-    method: "PATCH",
-    body: JSON.stringify(others),
+    return item;
   });
+}
 
-  return await response.json();
+export async function createSchedule(): Promise<void> {
+  await simulateNetwork(() => {
+    const currentTime = new Date().getTime();
+
+    const item: Schedule = {
+      id: generateID(),
+      content: "New schedule",
+      isImportant: false,
+      startTime: currentTime,
+      creationTime: currentTime,
+    };
+
+    scheduleDB.set(item.id, item);
+  });
+}
+
+export async function removeSchedule(id: string): Promise<void> {
+  await simulateNetwork(() => {
+    scheduleDB.delete(id);
+  });
+}
+
+export async function updateSchedule(id: string, parts: Partial<Schedule>): Promise<void> {
+  await simulateNetwork(() => {
+    const item = scheduleDB.get(id);
+
+    if (typeof item === "undefined") {
+      throw new Error(`Cannot find item with id ${id}`);
+    }
+
+    item.content = parts.content ?? "";
+    Object.assign(item, pickDefined(parts, "content", "isImportant", "startTime"));
+  });
 }

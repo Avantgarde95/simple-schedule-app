@@ -1318,6 +1318,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/uuid@npm:^8.3.4":
+  version: 8.3.4
+  resolution: "@types/uuid@npm:8.3.4"
+  checksum: 6f11f3ff70f30210edaa8071422d405e9c1d4e53abbe50fdce365150d3c698fe7bbff65c1e71ae080cbfb8fded860dbb5e174da96fdbbdfcaa3fb3daa474d20f
+  languageName: node
+  linkType: hard
+
 "@types/yargs-parser@npm:*":
   version: 21.0.0
   resolution: "@types/yargs-parser@npm:21.0.0"
@@ -5102,6 +5109,7 @@ __metadata:
     "@types/node": ^18.0.6
     "@types/react": ^18.0.15
     "@types/react-dom": ^18.0.6
+    "@types/uuid": ^8.3.4
     eslint: ^8.20.0
     eslint-config-next: ^12.2.2
     eslint-config-prettier: ^8.5.0
@@ -5114,6 +5122,7 @@ __metadata:
     react-icons: ^4.4.0
     recoil: ^0.7.4
     typescript: ^4.7.4
+    uuid: ^8.3.2
   languageName: unknown
   linkType: soft
 
@@ -5612,6 +5621,15 @@ __metadata:
   version: 1.0.2
   resolution: "util-deprecate@npm:1.0.2"
   checksum: 474acf1146cb2701fe3b074892217553dfcf9a031280919ba1b8d651a068c9b15d863b7303cb15bd00a862b498e6cf4ad7b4a08fb134edd5a6f7641681cb54a2
+  languageName: node
+  linkType: hard
+
+"uuid@npm:^8.3.2":
+  version: 8.3.2
+  resolution: "uuid@npm:8.3.2"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: 5575a8a75c13120e2f10e6ddc801b2c7ed7d8f3c8ac22c7ed0c7b2ba6383ec0abda88c905085d630e251719e0777045ae3236f04c812184b7c765f63a70e58df
   languageName: node
   linkType: hard
 

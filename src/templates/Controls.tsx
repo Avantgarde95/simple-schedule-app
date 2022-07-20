@@ -9,12 +9,7 @@ const Controls = () => {
   const queryClient = useQueryClient();
 
   async function handleClickCreate() {
-    await createSchedule({
-      content: "New schedule",
-      unixTime: new Date().getTime(),
-      importance: "Normal",
-    });
-
+    await createSchedule();
     await queryClient.invalidateQueries(["scheduleIDs"]);
   }
 

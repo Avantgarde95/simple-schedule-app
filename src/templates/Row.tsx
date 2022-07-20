@@ -12,11 +12,11 @@ type Mode = "View" | "Edit";
 
 interface RowProps {
   initialMode?: Mode;
-  scheduleID: number;
+  scheduleID: string;
 }
 
 const Row = ({ initialMode = "View", scheduleID }: RowProps) => {
-  const { data: schedule, isLoading } = useQuery(["schedule", scheduleID], () => getSchedule({ id: scheduleID }));
+  const { data: schedule, isLoading } = useQuery(["schedule", scheduleID], () => getSchedule(scheduleID));
   const [mode, setMode] = useState<Mode>(initialMode);
 
   function handleOpenEdit() {
@@ -49,10 +49,10 @@ interface ViewerProps {
 const Viewer = ({ schedule, onOpenEdit }: ViewerProps) => {
   const queryClient = useQueryClient();
 
-  const date = new Date(schedule.unixTime);
+  const date = new Date(schedule.startTime);
 
   async function handleClickDelete() {
-    await removeSchedule({ id: schedule.id });
+    await removeSchedule(schedule.id);
     await queryClient.invalidateQueries(["scheduleIDs"]);
   }
 
@@ -83,7 +83,7 @@ interface EditorProps {
 const Editor = ({ schedule, onOpenSave }: EditorProps) => {
   const queryClient = useQueryClient();
   const [content, setContent] = useState(schedule.content);
-  const [date, setDate] = useState(displayDate(new Date(schedule.unixTime)));
+  const [date, setDate] = useState(displayDate(new Date(schedule.startTime)));
 
   function handleContentChange(event: ChangeEvent<HTMLInputElement>) {
     setContent(event.target.value);
@@ -94,7 +94,7 @@ const Editor = ({ schedule, onOpenSave }: EditorProps) => {
   }
 
   async function save() {
-    await updateSchedule({ id: schedule.id, content, unixTime: new Date(date).getTime(), importance: "Normal" });
+    await updateSchedule(schedule.id, { content, startTime: new Date(date).getTime() });
     queryClient.invalidateQueries(["schedule", schedule.id]);
     onOpenSave();
   }
